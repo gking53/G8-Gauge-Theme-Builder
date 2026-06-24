@@ -1,0 +1,1182 @@
+{
+  "control_labels": {
+    "primary": "Main color",
+    "active_bar": "Active bar",
+    "track": "Gauge line outline",
+    "background": "Background color",
+    "logo": "Logo color",
+    "susp": "System bar icons (gear, suspension)",
+    "bg_image": "Background image"
+  },
+  "bases": {
+    "yamaha": {
+      "label": "Yamaha",
+      "controls": {
+        "primary": "#0066cc",
+        "active_bar": "#0066cc",
+        "track": "#999999",
+        "background": "#0a1633",
+        "logo": "#0066cc",
+        "susp": "#0066cc",
+        "bg_image": null
+      },
+      "apks": {
+        "SystemUI": {
+          "file": "templates/yamaha/SystemUI.apk",
+          "package": "com.android.systemui.overlay.arcticcat",
+          "int_patches": [
+            {
+              "control": "logo",
+              "entry": "res/drawable/ic_sysbar_cluster.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2592,
+                2792
+              ]
+            }
+          ],
+          "json_replace": [],
+          "png_tint": [],
+          "png_replace": []
+        },
+        "GarminCar": {
+          "file": "templates/yamaha/GarminCar.apk",
+          "package": "com.garmin.android.car.overlay.arcticcat.snow",
+          "int_patches": [
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_e.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                776
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_h.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                780
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_l.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                744
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_n.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                776
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_p.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                952
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_r.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                1120
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_driver1_enabled.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2776,
+                2876,
+                2976,
+                3076,
+                3176,
+                3276,
+                3376,
+                3476,
+                3576,
+                3676
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_driver2_enabled.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2952,
+                3052,
+                3152,
+                3252,
+                3352,
+                3452,
+                3552,
+                3652,
+                3752,
+                3852
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_firm_enabled.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2128,
+                2228,
+                2328,
+                2428,
+                2528,
+                2628,
+                2728
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_lock.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2256,
+                2356,
+                2456,
+                2556,
+                2656,
+                2756,
+                2856,
+                2956
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_medium_enabled.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2584,
+                2684,
+                2784,
+                2884,
+                2984,
+                3084,
+                3184,
+                3284,
+                3384
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_soft_enabled.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2016,
+                2116,
+                2216,
+                2316,
+                2416,
+                2516,
+                2616
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_unlock.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                2616,
+                2716,
+                2816,
+                2916,
+                3016,
+                3116,
+                3216,
+                3316,
+                3416,
+                3516
+              ]
+            }
+          ],
+          "json_replace": [],
+          "png_tint": [],
+          "png_replace": []
+        },
+        "VehicleCluster": {
+          "file": "templates/yamaha/VehicleCluster.apk",
+          "package": "com.garmin.pnd.vehiclecluster.vendor.arcticcat.snow",
+          "int_patches": [
+            {
+              "control": "primary",
+              "entry": "resources.arsc",
+              "argb": "ff0066cc",
+              "offsets": [
+                1936
+              ]
+            },
+            {
+              "control": "background",
+              "entry": "resources.arsc",
+              "argb": "ff0a1633",
+              "offsets": [
+                1920
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_speed_km.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                11036,
+                11196,
+                11356,
+                11516,
+                11676,
+                11836,
+                11996,
+                12156,
+                12316,
+                12476,
+                12636,
+                12796
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_speed_mph.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                10104,
+                10264,
+                10424,
+                10584,
+                10744,
+                10904,
+                11064,
+                11224,
+                11384,
+                11544,
+                11704,
+                11864
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_tach.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                7840,
+                8000,
+                8160,
+                8320,
+                8480,
+                8640,
+                8800,
+                8960,
+                9120,
+                9280
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/tex_gauge_fuel_blank.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                1952,
+                2092,
+                2232,
+                2372,
+                2512,
+                2652
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/tex_gauge_temp_blank.xml",
+              "argb": "ff0066cc",
+              "offsets": [
+                1956,
+                2096,
+                2236,
+                2376,
+                2516,
+                2656
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_speed_km.xml",
+              "argb": "ff999999",
+              "offsets": [
+                9356,
+                9476,
+                9596,
+                9716,
+                9836,
+                9956,
+                10076,
+                10196,
+                10316,
+                10436,
+                10556,
+                10676,
+                10796,
+                10916
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_speed_mph.xml",
+              "argb": "ff999999",
+              "offsets": [
+                8424,
+                8544,
+                8664,
+                8784,
+                8904,
+                9024,
+                9144,
+                9264,
+                9384,
+                9504,
+                9624,
+                9744,
+                9864,
+                9984
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_tach.xml",
+              "argb": "ff999999",
+              "offsets": [
+                5440,
+                5560,
+                5680,
+                5800,
+                5920,
+                6040,
+                6160,
+                6280,
+                6400,
+                6520,
+                6640,
+                6760,
+                6880
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/tex_gauge_fuel_blank.xml",
+              "argb": "ff999999",
+              "offsets": [
+                1552,
+                1652,
+                1752,
+                1852
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/tex_gauge_temp_blank.xml",
+              "argb": "ff999999",
+              "offsets": [
+                1556,
+                1656,
+                1756,
+                1856
+              ]
+            }
+          ],
+          "json_replace": [
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            }
+          ],
+          "png_tint": [
+            {
+              "control": "logo",
+              "entry": "res/drawable/cluster_center_logo.png"
+            },
+            {
+              "control": "background",
+              "entry": "res/drawable-nodpi/tex_bg.png"
+            }
+          ],
+          "png_replace": [
+            {
+              "control": "bg_image",
+              "entry": "res/drawable-nodpi/tex_bg.png",
+              "w": 1280,
+              "h": 800
+            }
+          ]
+        }
+      }
+    },
+    "arcticcat": {
+      "label": "Arctic Cat",
+      "controls": {
+        "primary": "#66bc29",
+        "active_bar": "#66bc29",
+        "track": "#999999",
+        "background": "#132308",
+        "logo": "#66bc29",
+        "susp": "#66bc29",
+        "bg_image": null
+      },
+      "apks": {
+        "SystemUI": {
+          "file": "templates/arcticcat/SystemUI.apk",
+          "package": "com.android.systemui.overlay.arcticcat",
+          "int_patches": [
+            {
+              "control": "logo",
+              "entry": "res/drawable/ic_sysbar_cluster.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                1896
+              ]
+            }
+          ],
+          "json_replace": [],
+          "png_tint": [],
+          "png_replace": []
+        },
+        "GarminCar": {
+          "file": "templates/arcticcat/GarminCar.apk",
+          "package": "com.garmin.android.car.overlay.arcticcat.snow",
+          "int_patches": [
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_e.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                776
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_h.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                780
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_l.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                744
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_n.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                776
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_p.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                952
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_gear_r.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                1120
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_driver1_enabled.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2740,
+                2840,
+                2940,
+                3040,
+                3140,
+                3240,
+                3340,
+                3440,
+                3540,
+                3640,
+                3740
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_driver2_enabled.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2920,
+                3020,
+                3120,
+                3220,
+                3320,
+                3420,
+                3520,
+                3620,
+                3720,
+                3820,
+                3920
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_firm_enabled.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2092,
+                2192,
+                2292,
+                2392,
+                2492,
+                2592,
+                2692,
+                2792
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_lock.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2212,
+                2312,
+                2412,
+                2512,
+                2612,
+                2712,
+                2812,
+                2912,
+                3012
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_medium_enabled.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2552,
+                2652,
+                2752,
+                2852,
+                2952,
+                3052,
+                3152,
+                3252,
+                3352,
+                3452
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_soft_enabled.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                1980,
+                2080,
+                2180,
+                2280,
+                2380,
+                2480,
+                2580,
+                2680
+              ]
+            },
+            {
+              "control": "susp",
+              "entry": "res/drawable/ic_susp_unlock.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                2572,
+                2672,
+                2772,
+                2872,
+                2972,
+                3072,
+                3172,
+                3272,
+                3372,
+                3472,
+                3572
+              ]
+            }
+          ],
+          "json_replace": [],
+          "png_tint": [],
+          "png_replace": []
+        },
+        "VehicleCluster": {
+          "file": "templates/arcticcat/VehicleCluster.apk",
+          "package": "com.garmin.pnd.vehiclecluster.vendor.arcticcat.snow",
+          "int_patches": [
+            {
+              "control": "primary",
+              "entry": "resources.arsc",
+              "argb": "ff66bc29",
+              "offsets": [
+                1936
+              ]
+            },
+            {
+              "control": "background",
+              "entry": "resources.arsc",
+              "argb": "ff132308",
+              "offsets": [
+                1920
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_speed_km.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                11036,
+                11196,
+                11356,
+                11516,
+                11676,
+                11836,
+                11996,
+                12156,
+                12316,
+                12476,
+                12636,
+                12796
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_speed_mph.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                10104,
+                10264,
+                10424,
+                10584,
+                10744,
+                10904,
+                11064,
+                11224,
+                11384,
+                11544,
+                11704,
+                11864
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/textron_tach.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                7840,
+                8000,
+                8160,
+                8320,
+                8480,
+                8640,
+                8800,
+                8960,
+                9120,
+                9280
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/tex_gauge_fuel_blank.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                1952,
+                2092,
+                2232,
+                2372,
+                2512,
+                2652
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/drawable/tex_gauge_temp_blank.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                1956,
+                2096,
+                2236,
+                2376,
+                2516,
+                2656
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_speed_km.xml",
+              "argb": "ff999999",
+              "offsets": [
+                9356,
+                9476,
+                9596,
+                9716,
+                9836,
+                9956,
+                10076,
+                10196,
+                10316,
+                10436,
+                10556,
+                10676,
+                10796,
+                10916
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_speed_mph.xml",
+              "argb": "ff999999",
+              "offsets": [
+                8424,
+                8544,
+                8664,
+                8784,
+                8904,
+                9024,
+                9144,
+                9264,
+                9384,
+                9504,
+                9624,
+                9744,
+                9864,
+                9984
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/textron_tach.xml",
+              "argb": "ff999999",
+              "offsets": [
+                5440,
+                5560,
+                5680,
+                5800,
+                5920,
+                6040,
+                6160,
+                6280,
+                6400,
+                6520,
+                6640,
+                6760,
+                6880
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/tex_gauge_fuel_blank.xml",
+              "argb": "ff999999",
+              "offsets": [
+                1552,
+                1652,
+                1752,
+                1852
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/drawable/tex_gauge_temp_blank.xml",
+              "argb": "ff999999",
+              "offsets": [
+                1556,
+                1656,
+                1756,
+                1856
+              ]
+            },
+            {
+              "control": "logo",
+              "entry": "res/drawable/cluster_center_logo.xml",
+              "argb": "ff66bc29",
+              "offsets": [
+                30260,
+                30360,
+                30460,
+                30580,
+                30680,
+                30780,
+                30900,
+                31020,
+                31140,
+                31260,
+                31380,
+                31500,
+                31620,
+                31740,
+                31860,
+                31980,
+                32100,
+                32220,
+                32340,
+                32460,
+                32580,
+                32700,
+                32820,
+                32940,
+                33060,
+                33180,
+                33300,
+                33420,
+                33540,
+                33660,
+                33780,
+                33900,
+                34020,
+                34140,
+                34260,
+                34380,
+                34500,
+                34620,
+                34740,
+                34860,
+                34980,
+                35100,
+                35220,
+                35320,
+                35420,
+                35520,
+                35640,
+                35760,
+                35880,
+                36000,
+                36120,
+                36240,
+                36360,
+                36480,
+                36600,
+                36720,
+                36840,
+                36960,
+                37080,
+                37200,
+                37320,
+                37440,
+                37560,
+                37680,
+                37800,
+                37920,
+                38040,
+                38160,
+                38280,
+                38400,
+                38520,
+                38640,
+                38860,
+                38960,
+                39060,
+                39160,
+                39280,
+                39400
+              ]
+            }
+          ],
+          "json_replace": [
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "primary",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                102,
+                188,
+                41
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "active_bar",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                200,
+                246,
+                172
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_fuel_gauge.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_speed_kmh.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_speed_mph.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_tach.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            },
+            {
+              "control": "track",
+              "entry": "res/raw/tex_temp_gauge.json",
+              "rgb": [
+                153,
+                153,
+                153
+              ]
+            }
+          ],
+          "png_tint": [
+            {
+              "control": "background",
+              "entry": "res/drawable-nodpi/tex_bg.png"
+            }
+          ],
+          "png_replace": [
+            {
+              "control": "bg_image",
+              "entry": "res/drawable-nodpi/tex_bg.png",
+              "w": 1280,
+              "h": 800
+            }
+          ]
+        }
+      }
+    }
+  }
+}

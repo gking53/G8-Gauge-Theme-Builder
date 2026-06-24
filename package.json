@@ -1,0 +1,26 @@
+{
+  "name": "custom-theme-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "In-browser color customizer + signer + WebUSB installer for Garmin/Android RRO theme overlays",
+  "type": "module",
+  "scripts": {
+    "gen-key": "node tools/gen_key.mjs",
+    "make-test-apk": "node tools/make_test_apk.mjs",
+    "gen-templates": "python tools/gen_templates.py",
+    "bundle-adb": "esbuild tools/yawebadb-entry.mjs --bundle --format=esm --target=es2022 --minify --outfile=docs/vendor/yawebadb.js",
+    "serve": "python tools/serve.py 8080"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "node-forge": "^1.3.1"
+  },
+  "devDependencies": {
+    "@yume-chan/adb": "^2.6.0",
+    "@yume-chan/adb-credential-web": "^2.1.0",
+    "@yume-chan/adb-daemon-webusb": "^2.3.2",
+    "@yume-chan/stream-extra": "^2.6.1",
+    "esbuild": "^0.28.1",
+    "lottie-web": "^5.13.0"
+  }
+}
