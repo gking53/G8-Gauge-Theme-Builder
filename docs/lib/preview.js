@@ -150,10 +150,45 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
   const lotEls = data.gauges.map((g) => q(`.pv-${g.pos} .pv-lottie`));
   let anims = [];
 
-  let bgImageUrl = null, timer = null, barSpecs = null;
+  let bgImageUrl = null, timer = null, barSpecs = null, gaugeMode = 'anim', lastColors = null;
   const POS_GROUP = { center: 'center', left: 'coolant', right: 'fuel' };
 
+  // Preview-only gauge bar state (for debugging gradient ranges):
+  //   'anim'  -> the white highlight sweeps (real device behavior)
+  //   'full'  -> frozen at the last frame (highlight at the tip, bar 100%)
+  //   'empty' -> only the static base/track renders, bar fill removed (0%)
+  // The colored bar is static-full in the asset, so 'empty' can't be a frame — we
+  // strip the gradient fill layers (and their matte layers) at build time, leaving
+  // just the solid base layer (the dial/track).
+  const layerHasGradient = (layer) => {
+    let g = false;
+    (function w(o) {
+      if (Array.isArray(o)) { o.forEach(w); return; }
+      if (o && typeof o === 'object') { if (o.ty === 'gf' || o.ty === 'gs') g = true; for (const k in o) w(o[k]); }
+    })(layer.shapes || []);
+    return g;
+  };
+  function emptyBarLayers(json) {
+    const L = json.layers || [];
+    for (let i = 0; i < L.length; i++) {
+      const isMatteFor = i + 1 < L.length && L[i + 1].tt;  // L[i] is the matte of L[i+1]
+      if (layerHasGradient(L[i]) || isMatteFor) {
+        L[i].hd = true;
+        L[i].ks = L[i].ks || {};
+        L[i].ks.o = { a: 0, k: 0 };   // opacity 0 — reliable hide across lottie-web versions
+      }
+    }
+  }
+  function applyGaugeMode() {
+    anims.forEach((a) => {
+      if (!a) return;
+      if (gaugeMode === 'anim') { a.loop = true; a.play(); }
+      else { a.goToAndStop(gaugeMode === 'full' ? Math.max(0, a.totalFrames - 1) : 0, true); }
+    });
+  }
+
   function apply(colors) {
+    lastColors = colors;   // remembered so a gauge-mode toggle can rebuild
     // background: black, with the colored sphere of tex_bg.png recolored to the
     // background color (or a user-uploaded image). Black stays black.
     elBg.style.background = '#000';
@@ -205,10 +240,13 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
         || { mode: 'single', c1: hexToRgb(baseColors.active_bar || baseColors.primary) };
       const { text } = recolorJson(gaugeText[i], solidRules, spec);
       let json; try { json = JSON.parse(text); } catch { return null; }
+      if (gaugeMode === 'empty') emptyBarLayers(json);   // strip fill -> 0% (track only)
       return lottie.loadAnimation({
-        container: lotEls[i], renderer: 'svg', loop: true, autoplay: true, animationData: json,
+        container: lotEls[i], renderer: 'svg',
+        loop: gaugeMode === 'anim', autoplay: gaugeMode === 'anim', animationData: json,
       });
     }).filter(Boolean);
+    applyGaugeMode();   // re-apply the chosen bar mode to the freshly built anims
   }
 
   return {
@@ -218,6 +256,12 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
       if (barSpecsVal !== undefined) barSpecs = barSpecsVal;
       clearTimeout(timer);
       timer = setTimeout(() => apply(colors), 120);
+    },
+    setGaugeMode(mode) {
+      const needsRebuild = (mode === 'empty') !== (gaugeMode === 'empty');
+      gaugeMode = mode;
+      if (needsRebuild && lastColors) apply(lastColors);   // 'empty' strips layers
+      else applyGaugeMode();                                // others: just playback
     },
   };
 }

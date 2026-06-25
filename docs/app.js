@@ -138,11 +138,15 @@ async function initPreviewForBase() {
   try {
     preview = await initPreview($('preview'), '.', selectedBase);
     pushPreview();
+    preview.setGaugeMode($('gaugemode').value);   // re-apply chosen bar mode
   } catch (e) {
     $('preview').innerHTML = '<p class="pv-hint">Preview unavailable.</p>';
     console.error('preview init failed', e);
   }
 }
+
+// Gauge-bar debug mode (preview only): animate / lock full / hide.
+$('gaugemode').addEventListener('change', (e) => preview?.setGaugeMode(e.target.value));
 
 renderControls();
 await initPreviewForBase();
