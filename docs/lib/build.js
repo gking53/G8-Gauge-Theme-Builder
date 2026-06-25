@@ -26,7 +26,7 @@ async function loadAssets(base = '.') {
  * @param {(msg:string)=>void} onProgress
  * @returns {Promise<Array<{name,package,bytes}>>}
  */
-export async function buildAll(baseName, colors, bgImageFile, barSpec, onProgress = () => {}) {
+export async function buildAll(baseName, colors, bgImageFile, barSpecs, onProgress = () => {}) {
   const { manifest, signing, base } = await loadAssets();
   const baseDef = manifest.bases[baseName];
   if (!baseDef) throw new Error(`Unknown base "${baseName}"`);
@@ -51,7 +51,7 @@ export async function buildAll(baseName, colors, bgImageFile, barSpec, onProgres
       }
     }
 
-    const bytes = await buildApk(template, apk, colors, pngOverrides, signing, barSpec);
+    const bytes = await buildApk(template, apk, colors, pngOverrides, signing, barSpecs);
     results.push({ name, package: apk.package, bytes });
   }
   onProgress('All overlays built.');

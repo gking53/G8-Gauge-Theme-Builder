@@ -12,7 +12,7 @@ let built = null;          // last build results
 let bgImageFile = null;    // optional uploaded background
 let preview = null;        // preview controller
 let selectedBase = null;   // current theme base id
-let bar = null;            // bar-gradient controls {mode, start, end, fade} elements
+const bars = {};           // active-bar gradient controls, keyed by control id
 const inputs = {};         // control -> {color, text}
 
 const { manifest } = await loadAssets();
@@ -36,27 +36,73 @@ function currentColors() {
   for (const [k, io] of Object.entries(inputs)) c[k] = io.color.value;
   return c;
 }
-// Bar gradient spec: single = shades of the active-bar color; two = start->end.
-function currentBarSpec() {
-  if (!bar) return { mode: 'single', c1: hexToRgb('#0066cc') };
-  if (bar.mode.value === 'two') {
-    return { mode: 'two', c1: hexToRgb(bar.start.value), c2: hexToRgb(bar.end.value),
-             fade: Number(bar.fade.value) / 100 };
+// Per-bar gradient spec: single = shades of one color; two = start->end + fade.
+function specOf(b) {
+  if (b.mode.value === 'two') {
+    return { mode: 'two', c1: hexToRgb(b.start.value), c2: hexToRgb(b.end.value),
+             fade: Number(b.fade.value) / 100 };
   }
-  return { mode: 'single', c1: hexToRgb(bar.c.value) };
+  return { mode: 'single', c1: hexToRgb(b.c.value) };
 }
-function pushPreview() { preview?.update(currentColors(), bgImageFile, currentBarSpec()); }
+function currentBarSpecs() {
+  const map = { active_center: 'center', active_coolant: 'coolant', active_fuel: 'fuel' };
+  const out = {};
+  for (const [k, g] of Object.entries(map)) if (bars[k]) out[g] = specOf(bars[k]);
+  return out;
+}
+function pushPreview() { preview?.update(currentColors(), bgImageFile, currentBarSpecs()); }
 
 // ── Render controls for the selected base ────────────────────────────────────
+function makeBar(parent, key, def) {
+  const w = document.createElement('div');
+  w.className = 'ctl';
+  w.innerHTML = `
+    <label>${manifest.control_labels[key] || key}</label>
+    <div class="row"><select class="bar-mode">
+      <option value="single">Single color (auto shades)</option>
+      <option value="two">Custom 2-color gradient</option>
+    </select></div>
+    <div class="bar-single"><div class="row">
+      <input type="color" class="bar-c" value="${def}" />
+      <input type="text" class="bar-ct" value="${def}" spellcheck="false" /></div></div>
+    <div class="bar-two" hidden>
+      <div class="row"><span class="bar-lbl">start</span>
+        <input type="color" class="bar-start" value="${def}" />
+        <span class="bar-lbl">end</span>
+        <input type="color" class="bar-end" value="${def}" /></div>
+      <div class="row fade-row"><span>fade</span>
+        <input type="range" min="0" max="100" value="50" class="bar-fade" /></div>
+    </div>
+    <small>single = shades of one color; custom = your own start→end gradient</small>`;
+  parent.appendChild(w);
+  const b = {
+    mode: w.querySelector('.bar-mode'), c: w.querySelector('.bar-c'), ct: w.querySelector('.bar-ct'),
+    start: w.querySelector('.bar-start'), end: w.querySelector('.bar-end'),
+    fade: w.querySelector('.bar-fade'), single: w.querySelector('.bar-single'), two: w.querySelector('.bar-two'),
+  };
+  bars[key] = b;
+  b.mode.addEventListener('change', () => {
+    b.single.hidden = b.mode.value !== 'single';
+    b.two.hidden = b.mode.value !== 'two';
+    pushPreview();
+  });
+  b.c.addEventListener('input', () => { b.ct.value = b.c.value; pushPreview(); });
+  b.ct.addEventListener('change', () => {
+    if (/^#[0-9a-fA-F]{6}$/.test(b.ct.value)) { b.c.value = b.ct.value; pushPreview(); }
+  });
+  for (const e of [b.start, b.end, b.fade]) e.addEventListener('input', pushPreview);
+}
+
 function renderControls() {
   const el = $('controls');
   el.innerHTML = '';
   for (const k of Object.keys(inputs)) delete inputs[k];
-  bar = null;
+  for (const k of Object.keys(bars)) delete bars[k];
   const controls = manifest.bases[selectedBase].controls;  // {control: defaultHex|null}
 
   for (const [key, def] of Object.entries(controls)) {
-    if (key === 'bg_image' || key === 'active_bar') continue;  // handled separately
+    if (key === 'bg_image') continue;                  // file picker, added below
+    if (key.startsWith('active_')) { makeBar(el, key, def); continue; }  // gradient control
     const label = manifest.control_labels[key] || key;
     const wrap = document.createElement('div');
     wrap.className = 'ctl';
@@ -75,45 +121,6 @@ function renderControls() {
       if (/^#[0-9a-fA-F]{6}$/.test(text.value)) { color.value = text.value; pushPreview(); }
     });
   }
-
-  // Active bar control: single color (shades) OR custom two-color gradient.
-  const abDef = controls.active_bar || '#0066cc';
-  const w = document.createElement('div');
-  w.className = 'ctl';
-  w.innerHTML = `
-    <label>${manifest.control_labels.active_bar || 'Active bar'}</label>
-    <div class="row"><select class="bar-mode">
-      <option value="single">Single color (auto shades)</option>
-      <option value="two">Custom 2-color gradient</option>
-    </select></div>
-    <div class="bar-single"><div class="row">
-      <input type="color" class="bar-c" value="${abDef}" />
-      <input type="text" class="bar-ct" value="${abDef}" spellcheck="false" /></div></div>
-    <div class="bar-two" hidden>
-      <div class="row"><span class="bar-lbl">start</span>
-        <input type="color" class="bar-start" value="${abDef}" />
-        <span class="bar-lbl">end</span>
-        <input type="color" class="bar-end" value="${abDef}" /></div>
-      <div class="row fade-row"><span>fade</span>
-        <input type="range" min="0" max="100" value="50" class="bar-fade" /></div>
-    </div>
-    <small>single = shades of one color; custom = your own start→end gradient</small>`;
-  el.appendChild(w);
-  bar = {
-    mode: w.querySelector('.bar-mode'), c: w.querySelector('.bar-c'), ct: w.querySelector('.bar-ct'),
-    start: w.querySelector('.bar-start'), end: w.querySelector('.bar-end'),
-    fade: w.querySelector('.bar-fade'), single: w.querySelector('.bar-single'), two: w.querySelector('.bar-two'),
-  };
-  bar.mode.addEventListener('change', () => {
-    bar.single.hidden = bar.mode.value !== 'single';
-    bar.two.hidden = bar.mode.value !== 'two';
-    pushPreview();
-  });
-  bar.c.addEventListener('input', () => { bar.ct.value = bar.c.value; pushPreview(); });
-  bar.ct.addEventListener('change', () => {
-    if (/^#[0-9a-fA-F]{6}$/.test(bar.ct.value)) { bar.c.value = bar.ct.value; pushPreview(); }
-  });
-  for (const elx of [bar.start, bar.end, bar.fade]) elx.addEventListener('input', pushPreview);
 
   // background image upload (always available)
   const fileWrap = document.createElement('div');
@@ -145,7 +152,7 @@ $('build').addEventListener('click', async () => {
   $('build').disabled = true; $('install').disabled = true;
   $('downloads').innerHTML = ''; logEl.textContent = '';
   try {
-    built = await buildAll(selectedBase, currentColors(), bgImageFile, currentBarSpec(), log);
+    built = await buildAll(selectedBase, currentColors(), bgImageFile, currentBarSpecs(), log);
     const dl = $('downloads');
     dl.innerHTML = '<div style="margin-top:10px">Download (manual install):</div>';
     for (const a of built) {

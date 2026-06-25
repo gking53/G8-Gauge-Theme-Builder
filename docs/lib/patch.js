@@ -30,7 +30,7 @@ function writeArgbLE(bytes, offset, hex) {
  * @param {{keyPem:string, certPem:string}} signing
  * @returns {Promise<Uint8Array>} signed APK
  */
-export async function buildApk(templateBytes, apkManifest, colors, pngOverrides, signing, barSpec = null) {
+export async function buildApk(templateBytes, apkManifest, colors, pngOverrides, signing, barSpecs = null) {
   const zip = await JSZip.loadAsync(templateBytes);
 
   // 1) int patches, grouped by entry so each entry is read/written once.
@@ -49,19 +49,24 @@ export async function buildApk(templateBytes, apkManifest, colors, pngOverrides,
     zip.file(entry, bytes, store ? { compression: 'STORE' } : undefined);
   }
 
-  // 2) json recolor: solid markings by value (primary), bar gradients via barSpec.
+  // 2) json recolor: solid markings by value (primary/track); each gauge's bar
+  //    gradient uses its group's barSpec (center / coolant / fuel).
   const gaugeEntries = new Set();
   const solidByEntry = new Map();
+  const groupByEntry = new Map();
   for (const j of apkManifest.json_replace || []) {
     gaugeEntries.add(j.entry);
-    if (j.control !== 'active_bar' && colors[j.control]) {  // solid fills (markings)
+    if (j.control === 'active_bar') {
+      groupByEntry.set(j.entry, j.group || 'center');
+    } else if (colors[j.control]) {  // solid fills (markings, track)
       if (!solidByEntry.has(j.entry)) solidByEntry.set(j.entry, []);
       solidByEntry.get(j.entry).push({ rgb: j.rgb, to: hexToRgb(colors[j.control]) });
     }
   }
   for (const entry of gaugeEntries) {
     const text = await zip.file(entry).async('string');
-    const { text: out } = recolorJson(text, solidByEntry.get(entry) || [], barSpec);
+    const spec = barSpecs && (barSpecs[groupByEntry.get(entry)] || barSpecs.center);
+    const { text: out } = recolorJson(text, solidByEntry.get(entry) || [], spec || null);
     zip.file(entry, out);
   }
 

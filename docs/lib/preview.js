@@ -125,6 +125,15 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
   frag.style.top = bands.status + '%';
   frag.style.bottom = bands.nav + '%';
   q('.pv-navbar').style.height = bands.nav + '%';
+  // background image fills the FULL screen on the device: content_main (which holds
+  // the tex_bg ImageView) has no fitsSystemWindows, so it spans edge-to-edge behind
+  // the translucent system bars. The asset is screen-sized (1280x800 = the 16:10
+  // stage), so object-fit:contain fills it exactly with the glow centered; uploaded
+  // images get fitCenter (letterboxed), matching the device's default scaleType.
+  // width/height MUST be set explicitly — an <img> is a replaced element, so
+  // top/bottom/left/right alone won't stretch it (it keeps its intrinsic size).
+  elBgImg.style.top = '0'; elBgImg.style.left = '0';
+  elBgImg.style.width = '100%'; elBgImg.style.height = '100%';
 
   // metrics bar (datafields) is NOT modeled — its space is already reserved by the
   // fragment layout; we just leave the region empty.
@@ -141,7 +150,8 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
   const lotEls = data.gauges.map((g) => q(`.pv-${g.pos} .pv-lottie`));
   let anims = [];
 
-  let bgImageUrl = null, timer = null, barSpec = null;
+  let bgImageUrl = null, timer = null, barSpecs = null;
+  const POS_GROUP = { center: 'center', left: 'coolant', right: 'fuel' };
 
   function apply(colors) {
     // background: black, with the colored sphere of tex_bg.png recolored to the
@@ -190,7 +200,9 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
         { rgb: hexToRgb(gf.primary), to: hexToRgb(colors.primary || baseColors.primary) },
       ];
       if (gf.track) solidRules.push({ rgb: hexToRgb(gf.track), to: hexToRgb(colors.track || baseColors.track || gf.track) });
-      const spec = barSpec || { mode: 'single', c1: hexToRgb(colors.active_bar || baseColors.active_bar) };
+      const group = POS_GROUP[g.pos] || 'center';
+      const spec = (barSpecs && barSpecs[group])
+        || { mode: 'single', c1: hexToRgb(baseColors.active_bar || baseColors.primary) };
       const { text } = recolorJson(gaugeText[i], solidRules, spec);
       let json; try { json = JSON.parse(text); } catch { return null; }
       return lottie.loadAnimation({
@@ -200,10 +212,10 @@ export async function initPreview(container, base = '.', baseName = 'yamaha') {
   }
 
   return {
-    update(colors, bgFile, barSpecVal) {
+    update(colors, bgFile, barSpecsVal) {
       if (bgFile) { if (bgImageUrl) URL.revokeObjectURL(bgImageUrl); bgImageUrl = URL.createObjectURL(bgFile); }
       else if (bgFile === null) { if (bgImageUrl) URL.revokeObjectURL(bgImageUrl); bgImageUrl = null; }
-      if (barSpecVal !== undefined) barSpec = barSpecVal;
+      if (barSpecsVal !== undefined) barSpecs = barSpecsVal;
       clearTimeout(timer);
       timer = setTimeout(() => apply(colors), 120);
     },

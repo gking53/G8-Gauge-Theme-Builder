@@ -1,7 +1,9 @@
 {
   "control_labels": {
     "primary": "Main color",
-    "active_bar": "Active bar",
+    "active_center": "Active bar \u2014 speed / tach",
+    "active_coolant": "Active bar \u2014 coolant",
+    "active_fuel": "Active bar \u2014 fuel",
     "track": "Gauge line outline",
     "background": "Background color",
     "logo": "Logo color",
@@ -13,7 +15,9 @@
       "label": "Yamaha",
       "controls": {
         "primary": "#0066cc",
-        "active_bar": "#0066cc",
+        "active_center": "#0066cc",
+        "active_coolant": "#0066cc",
+        "active_fuel": "#0066cc",
         "track": "#999999",
         "background": "#0a1633",
         "logo": "#0066cc",
@@ -445,7 +449,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "fuel"
             },
             {
               "control": "active_bar",
@@ -454,7 +459,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -463,7 +469,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -472,7 +479,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -481,7 +489,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "coolant"
             },
             {
               "control": "track",
@@ -554,7 +563,9 @@
       "label": "Arctic Cat",
       "controls": {
         "primary": "#66bc29",
-        "active_bar": "#66bc29",
+        "active_center": "#66bc29",
+        "active_coolant": "#66bc29",
+        "active_fuel": "#66bc29",
         "track": "#999999",
         "background": "#132308",
         "logo": "#66bc29",
@@ -1077,7 +1088,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "fuel"
             },
             {
               "control": "active_bar",
@@ -1086,7 +1098,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -1095,7 +1108,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -1104,7 +1118,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "center"
             },
             {
               "control": "active_bar",
@@ -1113,7 +1128,8 @@
                 200,
                 246,
                 172
-              ]
+              ],
+              "group": "coolant"
             },
             {
               "control": "track",

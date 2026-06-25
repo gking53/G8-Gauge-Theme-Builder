@@ -63,19 +63,37 @@ export function recolorJson(text, solidRules = [], barSpec = null) {
     const lo = Math.min(...pos), span = (Math.max(...pos) - lo) || 1;
 
     if (same) {
-      // leading-edge highlight -> a light tint of the bar color (keep alpha ramp)
-      const base = barSpec.mode === 'two' ? barSpec.c2 : barSpec.c1;
-      const [h, s] = rgb2hsv(base[0], base[1], base[2]);
-      const light = hsv2rgb(h, s * 0.45, 1);
-      for (let i = 0; i < p; i++) setStop(arr, i, light);
+      // leading-edge highlight -> neutral white "shine"; blends regardless of the
+      // bar color. Keep the alpha ramp's SHAPE but cap its peak at 0.75 so the tip
+      // never goes fully opaque (softer, more background-blended glint).
+      for (let i = 0; i < p; i++) setStop(arr, i, [255, 255, 255]);
+      const aStart = p * 4, m = (arr.length - aStart) / 2;
+      if (m > 0) {
+        let amax = 0;
+        for (let j = 0; j < m; j++) amax = Math.max(amax, arr[aStart + j * 2 + 1]);
+        const scale = amax > 0 ? 0.75 / amax : 1;
+        for (let j = 0; j < m; j++) arr[aStart + j * 2 + 1] *= scale;
+      }
       return;
     }
     // main bar shade gradient
     if (barSpec.mode === 'two') {
       const fade = barSpec.fade == null ? 0.5 : barSpec.fade;
-      const expo = Math.pow(4, (fade - 0.5) * 2);  // 0.5 -> linear; lower -> sharper
+      // Constant-width fade that SLIDES: the blend is always the same softness
+      // (width 2*W); `fade` only moves WHERE it sits along the bar.
+      //   fade=0 -> band near the start (mostly END color after it)
+      //   fade=1 -> band slides off the tip, so the END color is just peeking
+      //            through at the very end (onset ~0.9 instead of pinned at 0.8)
+      // The upper bound (HI) runs past 1.0 on purpose so the end can reach the tip;
+      // the lower bound stays at W so the start side keeps the full fade on-bar.
+      const W = 0.2;                          // transition half-width (constant)
+      const HI = 1.1;                         // upper center bound (>1 => peek at tip)
+      const center = W + fade * (HI - W);     // slides from W .. HI
       for (let i = 0; i < p; i++) {
-        const t = Math.pow((pos[i] - lo) / span, expo);
+        const tn = (pos[i] - lo) / span;
+        let u = (tn - (center - W)) / (2 * W);
+        u = u < 0 ? 0 : u > 1 ? 1 : u;
+        const t = u * u * (3 - 2 * u);          // smoothstep: 0 = start color, 1 = end color
         setStop(arr, i, lerp3(barSpec.c1, barSpec.c2, t));
       }
     } else {

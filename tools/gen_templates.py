@@ -39,12 +39,20 @@ JAVA = Path(r"C:/Program Files/Android/Android Studio/jbr/bin/java.exe")
 # ── Logical controls (labels shown in the UI) ────────────────────────────────
 CONTROL_LABELS = {
     "primary": "Main color",
-    "active_bar": "Active bar",
+    "active_center": "Active bar — speed / tach",
+    "active_coolant": "Active bar — coolant",
+    "active_fuel": "Active bar — fuel",
     "track": "Gauge line outline",
     "background": "Background color",
     "logo": "Logo color",
     "susp": "System bar icons (gear, suspension)",
     "bg_image": "Background image",
+}
+
+# which gauge file belongs to which active-bar group (independent gradients)
+GAUGE_GROUPS = {
+    "tex_tach.json": "center", "tex_speed_kmh.json": "center", "tex_speed_mph.json": "center",
+    "tex_temp_gauge.json": "coolant", "tex_fuel_gauge.json": "fuel",
 }
 
 # Canonical gauge animations (Arctic Cat's — they have the leading-edge gradient
@@ -304,7 +312,10 @@ def extract_overlay(apk_dir: Path, scopes: dict, apk_entry: dict) -> int:
         for rel in entries_matching(apk_dir, scope["glob"]):
             text = (apk_dir / rel).read_text(encoding="utf-8", errors="ignore")
             if count_json_triples(text, scope["rgb"]):
-                apk_entry["json_replace"].append({"control": scope["control"], "entry": rel, "rgb": scope["rgb"]})
+                e = {"control": scope["control"], "entry": rel, "rgb": scope["rgb"]}
+                if scope["control"] == "active_bar":  # tag the gradient's bar group
+                    e["group"] = GAUGE_GROUPS.get(rel.rsplit("/", 1)[-1], "center")
+                apk_entry["json_replace"].append(e)
                 print(f"  [json] {scope['control']:10s} {rel}")
     for scope in scopes["png_tint"]:
         for rel in entries_matching(apk_dir, scope["glob"]):
@@ -676,11 +687,15 @@ def main():
 
     for base_name, base in bases.items():
         print(f"\n############  BASE: {base_name}  ({base['label']})  ############")
-        base_entry = {
-            "label": base["label"],
-            "controls": {**base["colors"], "bg_image": None},  # supported controls + base color
-            "apks": {},
-        }
+        # one active-bar value in BASES expands to 3 per-bar controls in the UI
+        ctrls = {}
+        for k, v in base["colors"].items():
+            if k == "active_bar":
+                ctrls["active_center"] = ctrls["active_coolant"] = ctrls["active_fuel"] = v
+            else:
+                ctrls[k] = v
+        ctrls["bg_image"] = None
+        base_entry = {"label": base["label"], "controls": ctrls, "apks": {}}
         for key in OVERLAY_KEYS:
             src = ROOT / base["dirs"][key]
             if base.get("inject_susp") and key == "GarminCar":

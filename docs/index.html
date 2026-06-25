@@ -80,7 +80,7 @@
      styles); everything else (odometer, coolant) uses the default Roboto. */
   .pv-speed, .pv-mk { font-family:'Russo One', sans-serif; }
   .pv-bg { position:absolute; inset:0; }
-  .pv-bgimg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .pv-bgimg { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; }  /* fitCenter on device; width/height needed so the img box = stage (inset:0 won't stretch a replaced element) */
   /* screen bands: status bar (top), cluster fragment (middle), nav bar (bottom) */
   .pv-statusbar { position:absolute; top:0; left:0; right:0; z-index:3; display:flex;
     align-items:center; justify-content:space-between; padding:0 3%;
